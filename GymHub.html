@@ -12,9 +12,14 @@
         <div class="header-container">
             <div class="header-title">
             <img src="./icon/main icon.png" alt="Gym Hub 로고" class="main-icon">
-            <div style="border: 1px solid  black; width: 800px; height: 70px;" >
-                <p><br>여기에 메뉴바(ex 로그인, 직원관리, 분석)가 들어가면 좋을것 같습니다.</p>
-                <p>현재 데이터는 임의로 추가한 상태</p>
+        
+            <div className="auth-buttons">
+              <button className="auth-btn auth-btn-login" onClick={() => setShowLogin(true)}>
+                로그인
+              </button>
+              <button className="auth-btn auth-btn-signup" onClick={() => setShowSignup(true)}>
+                회원가입
+              </button>
             </div>
         </div>
 
