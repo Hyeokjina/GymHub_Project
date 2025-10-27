@@ -791,7 +791,7 @@ body {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
-  accent-color: #ff8800 !important;
+  accent-color: #ff8800;
 }
 
 .radio-label {
