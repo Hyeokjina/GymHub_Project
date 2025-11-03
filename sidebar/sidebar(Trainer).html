@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+            width: 255px;
+            height: 100%;
+            background-color: #1a0f0a;
+            border-right: 1px solid #ff6b00;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: absolute;
+            left: 33px;
+            top: 1px;
+            width: 221px;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 24px 22px 24px 0;
+            box-sizing: border-box;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .icon img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 아이콘 비율 유지 */
+        }
+
+        .logo-text-container {
+            width: 143px;
+            height: 62px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* 🔸 네온 효과 적용 */
+        .logo-text {
+            position: absolute;
+            left: 7px;
+            top: 19px;
+            width: 129px;
+            font-size: 24px;
+            line-height: 24px;
+            color: #ff6b00;
+            font-style: normal;
+            text-shadow: 
+                0 0 10px #ff8800,
+                0 0 20px #ff8800,
+                0 0 30px #ff8800,
+                0 0 40px #ffaa00,
+                0 0 60px #ffdd00;
+            animation: neonBuzz 3s ease-in-out infinite;
+        }
+
+        @keyframes neonBuzz {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 60px #ffdd00;
+            }
+            10% {
+                text-shadow: 
+                    0 0 5px #ff8800,
+                    0 0 10px #ff8800;
+            }
+            20% {
+                text-shadow: 
+                    0 0 15px #ff8800,
+                    0 0 25px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 70px #ffdd00;
+            }
+            30% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800;
+            }
+        }
+
+        /* Divider */
+        .divider {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 255px;
+            height: 1px;
+            background-color: #ff6b00;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: absolute;
+            left: 0;
+            top: 109px;
+            width: 255px;
+            height: 726px;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-button {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav-button:hover {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.logout {
+            border-radius: 8px;
+            width: 223px;
+        }
+
+        .nav-button img {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .nav-button span {
+            position: absolute;
+            left: 40px;
+            top: 7px;
+            font-size: 14px;
+            line-height: 20px;
+            color: #ffa366;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .nav-button.logout span {
+            color: #ff5252;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Logo Container -->
+            <div class="logo-container">
+                <div class="icon">
+                    <img src="/sidebar/icon/logo.png" alt="GymHub 로고 아이콘">
+                </div>
+                <div class="logo-text-container">
+                    <p class="logo-text">GymHub</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Navigation -->
+            <nav class="navigation">
+                <button class="nav-button">
+                    <img src="/sidebar/icon/home.png" alt="대시보드 아이콘">
+                    <span>대시보드</span>
+                </button>
+                <button class="nav-button">
+                    <img src="/sidebar/icon/campaign.png" alt="공지사항 아이콘">
+                    <span>공지사항</span>
+                </button>
+                <button class="nav-button logout">
+                    <img src="/sidebar/icon/output.png" alt="로그아웃 아이콘">
+                    <span>로그아웃</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content"></div>
+    </div>
+
+    <script>
+        // 버튼 클릭 이벤트 처리
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                console.log(this.querySelector('span').textContent + ' 클릭됨');
+            });
+        });
+    </script>
+</body>
+</html>

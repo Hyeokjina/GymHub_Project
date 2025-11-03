@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymHub - 대시보드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+            width: 255px;
+            height: 100%;
+            background-color: #1a0f0a;
+            border-right: 1px solid #ff6b00;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: absolute;
+            left: 33px;
+            top: 1px;
+            width: 221px;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 24px 22px 24px 0;
+            box-sizing: border-box;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .icon img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text-container {
+            width: 143px;
+            height: 62px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .logo-text {
+            position: absolute;
+            left: 7px;
+            top: 19px;
+            width: 129px;
+            font-size: 24px;
+            line-height: 24px;
+            color: #ff6b00;
+            font-style: normal;
+            text-shadow: 
+                0 0 10px #ff8800,
+                0 0 20px #ff8800,
+                0 0 30px #ff8800,
+                0 0 40px #ffaa00,
+                0 0 60px #ffdd00;
+            animation: neonBuzz 3s ease-in-out infinite;
+        }
+
+        @keyframes neonBuzz {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 60px #ffdd00;
+            }
+            10% {
+                text-shadow: 
+                    0 0 5px #ff8800,
+                    0 0 10px #ff8800;
+            }
+            20% {
+                text-shadow: 
+                    0 0 15px #ff8800,
+                    0 0 25px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 70px #ffdd00;
+            }
+            30% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800;
+            }
+        }
+
+        /* Divider */
+        .divider {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 255px;
+            height: 1px;
+            background-color: #ff6b00;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: absolute;
+            left: 0;
+            top: 109px;
+            width: 255px;
+            height: 726px;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-button {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav-button:hover {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.active {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.logout {
+            border-radius: 8px;
+            width: 223px;
+        }
+
+        .nav-button img {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .nav-button span {
+            position: absolute;
+            left: 40px;
+            top: 7px;
+            font-size: 14px;
+            line-height: 20px;
+            color: #ffa366;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .nav-button.logout span {
+            color: #ff5252;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: #0a0a0a;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Stats Cards - Top Row */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .stat-card {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-change {
+            font-size: 14px;
+        }
+
+        .stat-change.positive {
+            color: #05df72;
+        }
+
+        .stat-change.negative {
+            color: #ff6467;
+        }
+
+        /* Monthly Stats Section */
+        .monthly-stats {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .section-header {
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff6b00;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .section-subtitle {
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+
+        .monthly-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+        }
+
+        .monthly-card {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+            display: flex;
+            gap: 16px;
+            position: relative;
+        }
+
+        .monthly-removed {
+            font-size: 14px;
+            color: #ff6467;
+            margin-top: 4px;
+        }
+
+        /* Bottom Grid - 3 Columns */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .card-header {
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff6b00;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: #ff6b00;
+        }
+
+        .badge {
+            background-color: #ff6b00;
+            border-radius: 20px;
+            padding: 4px 12px;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+        }
+
+        .badge-text {
+            font-size: 12px;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Reservation Items */
+        .reservation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .reservation-item {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
+        }
+
+        .reservation-name {
+            font-size: 14px;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .reservation-time {
+            font-size: 12px;
+            color: #b0b0b0;
+            font-weight: 700;
+        }
+
+        /* Inventory Items */
+        .inventory-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .inventory-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .inventory-name {
+            font-size: 14px;
+            color: white;
+        }
+
+        .inventory-count {
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            background-color: #2d1810;
+            height: 8px;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 4px;
+            margin: 2px;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.5);
+            transition: width 0.3s;
+        }
+
+        /* Locker Status */
+        .locker-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .locker-card {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
+            text-align: center;
+        }
+
+        .locker-label {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 4px;
+        }
+
+        .locker-value {
+            font-size: 20px;
+        }
+
+        .locker-split {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Logo Container -->
+            <div class="logo-container">
+                <div class="icon">
+                    <img src="sidebar/icon/logo.png" alt="GymHub 로고 아이콘">
+                </div>
+                <div class="logo-text-container">
+                    <p class="logo-text">GymHub</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Navigation -->
+            <nav class="navigation">
+                <button class="nav-button active">
+                    <img src="sidebar/icon/home.png" alt="대시보드 아이콘">
+                    <span>대시보드</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/group.png" alt="회원 관리 아이콘">
+                    <span>회원 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/finace.png" alt="매출 현황 아이콘">
+                    <span>매출 현황</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_center.png" alt="시설 관리 아이콘">
+                    <span>시설 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/calendar.png" alt="예약 상담 관리 아이콘">
+                    <span>예약 상담 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/shopping_bag.png" alt="물품관리 아이콘">
+                    <span>물품관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/movie.png" alt="영상관리 아이콘">
+                    <span>영상관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/article_person.png" alt="헬스장 정보 관리 아이콘">
+                    <span>헬스장 정보 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/campaign.png" alt="공지사항 아이콘">
+                    <span>공지사항</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_tracker.png" alt="트레이너 관리 아이콘">
+                    <span>트레이너 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/demography.png" alt="PT 관리 아이콘">
+                    <span>PT 관리</span>
+                </button>
+
+                <button class="nav-button logout">
+                    <img src="sidebar/icon/output.png" alt="로그아웃 아이콘">
+                    <span>로그아웃</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="dashboard-container">
+                <!-- Top Stats Cards -->
+                <div class="stats-grid">
+                    <!-- 이번 달 매출 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span style="font-size: 24px;">💰</span>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">이번 달 매출</div>
+                            <div class="stat-value">17,200,000원</div>
+                            <div class="stat-change positive">+4.2%</div>
+                        </div>
+                    </div>
+
+                    <!-- 전체 회원 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span style="font-size: 24px;">👥</span>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">전체 회원</div>
+                            <div class="stat-value">205명</div>
+                            <div class="stat-change negative">신규 13명</div>
+                        </div>
+                    </div>
+
+                    <!-- 오늘 출석 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span style="font-size: 24px;">⏰</span>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">오늘 출석</div>
+                            <div class="stat-value">156명</div>
+                            <div class="stat-label">평균 출석률: 76%</div>
+                        </div>
+                    </div>
+
+                    <!-- 만료 예정 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <span style="font-size: 24px;">⚠️</span>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">만료 예정</div>
+                            <div class="stat-value">25명</div>
+                            <div class="stat-label">7일 이내 만료</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Stats Section -->
+                <div class="monthly-stats">
+                    <div class="section-header">
+                        <div class="section-title">최근 5개월 회원수 통계</div>
+                        <div class="section-subtitle">월별 회원수 현황</div>
+                    </div>
+                    <div class="monthly-grid">
+                        <!-- 1월 -->
+                        <div class="monthly-card">
+                            <div class="stat-icon">
+                                <span style="font-size: 24px;">👥</span>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">1월 회원수</div>
+                                <div class="stat-value">205명</div>
+                                <div class="stat-change positive">등록 13명</div>
+                                <div class="monthly-removed">해지 2명</div>
+                            </div>
+                        </div>
+
+                        <!-- 2월 -->
+                        <div class="monthly-card">
+                            <div class="stat-icon">
+                                <span style="font-size: 24px;">👥</span>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">2월 회원수</div>
+                                <div class="stat-value">210명</div>
+                                <div class="stat-change positive">등록 5명</div>
+                                <div class="monthly-removed">해지 0명</div>
+                            </div>
+                        </div>
+
+                        <!-- 3월 -->
+                        <div class="monthly-card">
+                            <div class="stat-icon">
+                                <span style="font-size: 24px;">👥</span>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">3월 회원수</div>
+                                <div class="stat-value">211명</div>
+                                <div class="stat-change positive">등록 3명</div>
+                                <div class="monthly-removed">해지 2명</div>
+                            </div>
+                        </div>
+
+                        <!-- 4월 -->
+                        <div class="monthly-card">
+                            <div class="stat-icon">
+                                <span style="font-size: 24px;">👥</span>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">4월 회원수</div>
+                                <div class="stat-value">212명</div>
+                                <div class="stat-change positive">등록 10명</div>
+                                <div class="monthly-removed">해지 1명</div>
+                            </div>
+                        </div>
+
+                        <!-- 5월 -->
+                        <div class="monthly-card">
+                            <div class="stat-icon">
+                                <span style="font-size: 24px;">👥</span>
+                            </div>
+                            <div class="stat-info">
+                                <div class="stat-label">5월 회원수</div>
+                                <div class="stat-value">210명</div>
+                                <div class="stat-change positive">등록 4명</div>
+                                <div class="monthly-removed">해지 2명</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Grid - 3 Columns -->
+                <div class="bottom-grid">
+                    <!-- 예약 상담 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">예약 상담</div>
+                            <div class="badge">
+                                <div class="badge-text">5건</div>
+                            </div>
+                        </div>
+                        <div class="reservation-list">
+                            <div class="reservation-item">
+                                <div class="reservation-name">이민지</div>
+                                <div class="reservation-time">10월 29일 15:00</div>
+                            </div>
+                            <div class="reservation-item">
+                                <div class="reservation-name">김태현</div>
+                                <div class="reservation-time">10월 30일 10:00</div>
+                            </div>
+                            <div class="reservation-item">
+                                <div class="reservation-name">박지영</div>
+                                <div class="reservation-time">10월 31일 14:00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 재고 관리 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">재고 관리</div>
+                        </div>
+                        <div class="inventory-list">
+                            <div class="inventory-item">
+                                <div class="inventory-header">
+                                    <div class="inventory-name">수건</div>
+                                    <div class="inventory-count" style="color: white;">150 / 200개</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%; background-color: #ff6b00;"></div>
+                                </div>
+                            </div>
+                            <div class="inventory-item">
+                                <div class="inventory-header">
+                                    <div class="inventory-name">운동복</div>
+                                    <div class="inventory-count" style="color: #fdc700;">35 / 100개</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 35%; background-color: #fdc700;"></div>
+                                </div>
+                            </div>
+                            <div class="inventory-item">
+                                <div class="inventory-header">
+                                    <div class="inventory-name">생수</div>
+                                    <div class="inventory-count" style="color: white;">120 / 200개</div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%; background-color: #ff6b00;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 락커 현황 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">락커 현황</div>
+                        </div>
+                        <div class="locker-grid">
+                            <div class="locker-card">
+                                <div class="locker-label">전체 락커</div>
+                                <div class="locker-value" style="color: white;">30개</div>
+                            </div>
+                            <div class="locker-split">
+                                <div class="locker-card">
+                                    <div class="locker-label">사용중</div>
+                                    <div class="locker-value" style="color: #fa5546;">17개</div>
+                                </div>
+                                <div class="locker-card">
+                                    <div class="locker-label">만료예정</div>
+                                    <div class="locker-value" style="color: #fdc700;">6개</div>
+                                </div>
+                            </div>
+                            <div class="locker-card">
+                                <div class="locker-label">사용 가능한 락커 수</div>
+                                <div class="locker-value" style="color: #05df72;">13개</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 네비게이션 버튼 클릭 이벤트
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!this.classList.contains('logout')) {
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    console.log(this.querySelector('span').textContent + ' 클릭됨');
+                } else {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        alert('로그아웃 되었었습니다.');
+                    }
+                }
+            });
+        });
+
+        // 프로그레스 바 애니메이션
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        });
+
+        // 통계 카드 호버 효과
+        document.querySelectorAll('.stat-card, .monthly-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.transition = 'transform 0.3s';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

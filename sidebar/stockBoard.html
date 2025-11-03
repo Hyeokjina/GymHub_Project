@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymHub - 물품 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+            width: 255px;
+            height: 100%;
+            background-color: #1a0f0a;
+            border-right: 1px solid #ff6b00;
+        }
+
+        .logo-container {
+            position: absolute;
+            left: 33px;
+            top: 1px;
+            width: 221px;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 24px 22px 24px 0;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            color: #ff6b00;
+            text-shadow: 
+                0 0 10px #ff8800,
+                0 0 20px #ff8800,
+                0 0 30px #ff8800,
+                0 0 40px #ffaa00,
+                0 0 60px #ffdd00;
+            animation: neonBuzz 3s ease-in-out infinite;
+        }
+
+        @keyframes neonBuzz {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 60px #ffdd00;
+            }
+            10% {
+                text-shadow: 
+                    0 0 5px #ff8800,
+                    0 0 10px #ff8800;
+            }
+            20% {
+                text-shadow: 
+                    0 0 15px #ff8800,
+                    0 0 25px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 70px #ffdd00;
+            }
+        }
+
+        .divider {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 255px;
+            height: 1px;
+            background-color: #ff6b00;
+        }
+
+        .navigation {
+            position: absolute;
+            left: 0;
+            top: 109px;
+            width: 255px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-button {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .nav-button:hover {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.active {
+            border-color: #ff6b00;
+        }
+
+        .nav-button img {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .nav-button span {
+            position: absolute;
+            left: 40px;
+            top: 7px;
+            font-size: 14px;
+            color: #ffa366;
+        }
+
+        .nav-button.logout span {
+            color: #ff5252;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: #0a0a0a;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-button {
+            background: transparent;
+            border: none;
+            color: #ff6b00;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            transition: transform 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateX(-3px);
+        }
+
+        .page-title {
+            font-size: 24px;
+            color: #ff6b00;
+        }
+
+        .add-button {
+            background-color: #ff6b00;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+            transition: all 0.3s;
+        }
+
+        .add-button:hover {
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Stat Card */
+        .stat-card {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.5);
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .stat-card-title {
+            font-size: 16px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .stat-card-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-button {
+            width: 24px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            color: #ff6b00;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-button:hover {
+            transform: scale(1.2);
+        }
+
+        .stat-card-info {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 12px;
+        }
+
+        .progress-container {
+            position: relative;
+            height: 8px;
+            background-color: #1a0f0a;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: #ff6b00;
+            margin: 2px;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #b0b0b0;
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        /* Inventory Table */
+        .inventory-section {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .section-header {
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff6b00;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #ff6b00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #2d1810;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            color: #ff6b00;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 2px solid #ff6b00;
+        }
+
+        th:last-child {
+            text-align: center;
+        }
+
+        td {
+            padding: 16px;
+            color: #b0b0b0;
+            font-size: 14px;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        td:first-child {
+            color: white;
+            font-weight: 500;
+        }
+
+        td:last-child {
+            text-align: center;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-sufficient {
+            background-color: rgba(5, 223, 114, 0.2);
+            border: 1px solid #05df72;
+            color: #05df72;
+        }
+
+        .status-low {
+            background-color: rgba(251, 44, 54, 0.2);
+            border: 1px solid #fb2c36;
+            color: #ff6467;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <div class="icon">
+                    <img src="sidebar/icon/logo.png" alt="GymHub 로고">
+                </div>
+                <p class="logo-text">GymHub</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <nav class="navigation">
+                <button class="nav-button">
+                    <img src="sidebar/icon/home.png" alt="대시보드">
+                    <span>대시보드</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/group.png" alt="회원 관리">
+                    <span>회원 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/finace.png" alt="매출 현황">
+                    <span>매출 현황</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_center.png" alt="시설 관리">
+                    <span>시설 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/calendar.png" alt="예약 상담 관리">
+                    <span>예약 상담 관리</span>
+                </button>
+                <button class="nav-button active">
+                    <img src="sidebar/icon/shopping_bag.png" alt="물품관리">
+                    <span>물품관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/movie.png" alt="영상관리">
+                    <span>영상관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/article_person.png" alt="헬스장 정보">
+                    <span>헬스장 정보 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/campaign.png" alt="공지사항">
+                    <span>공지사항</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_tracker.png" alt="트레이너 관리">
+                    <span>트레이너 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/demography.png" alt="PT 관리">
+                    <span>PT 관리</span>
+                </button>
+                <button class="nav-button logout">
+                    <img src="sidebar/icon/output.png" alt="로그아웃">
+                    <span>로그아웃</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <button class="back-button" onclick="goBack()">←</button>
+                    <h1 class="page-title">재고 관리</h1>
+                </div>
+                <button class="add-button" onclick="addItem()">➕ 물품 추가</button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <!-- Card 1: 수건 -->
+                <div class="stat-card" onclick="viewDetail('수건')">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">수건</div>
+                        <div class="stat-card-icons">
+                            <button class="icon-button" onclick="editItem(event, '수건')">🔍</button>
+                            <button class="icon-button" onclick="editItem(event, '수건')">✏️</button>
+                            <button class="icon-button" onclick="deleteItem(event, '수건')">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="stat-card-info">현재 재고 150개</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 75%;"></div>
+                    </div>
+                    <div class="progress-text">150개</div>
+                </div>
+
+                <!-- Card 2: 운동복(상의) -->
+                <div class="stat-card" onclick="viewDetail('운동복(상의)')">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">운동복(상의)</div>
+                        <div class="stat-card-icons">
+                            <button class="icon-button" onclick="editItem(event, '운동복(상의)')">🔍</button>
+                            <button class="icon-button" onclick="editItem(event, '운동복(상의)')">✏️</button>
+                            <button class="icon-button" onclick="deleteItem(event, '운동복(상의)')">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="stat-card-info">현재 재고 100개</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-text">100%</div>
+                </div>
+
+                <!-- Card 3: 당일권 패키지 -->
+                <div class="stat-card" onclick="viewDetail('당일권 패키지')">
+                    <div class="stat-card-header">
+                        <div class="stat-card-title">당일권 패키지</div>
+                        <div class="stat-card-icons">
+                            <button class="icon-button" onclick="editItem(event, '당일권 패키지')">🔍</button>
+                            <button class="icon-button" onclick="editItem(event, '당일권 패키지')">✏️</button>
+                            <button class="icon-button" onclick="deleteItem(event, '당일권 패키지')">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="stat-card-info">현재 재고 50개</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 50%;"></div>
+                    </div>
+                    <div class="progress-text">83개</div>
+                </div>
+            </div>
+
+            <!-- Inventory Table -->
+            <div class="inventory-section">
+                <div class="section-header">
+                    <h2 class="section-title">재고 목록</h2>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>항목명</th>
+                            <th>상태</th>
+                            <th>수량</th>
+                            <th>최근 입고일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr onclick="viewItemDetail('수건')">
+                            <td>수건</td>
+                            <td><span class="status-badge status-sufficient">충고</span></td>
+                            <td>120 개</td>
+                            <td>2025.06.01 14 : 00</td>
+                        </tr>
+                        <tr onclick="viewItemDetail('운동복(상의)')">
+                            <td>운동복(상의)</td>
+                            <td><span class="status-badge status-sufficient">충고</span></td>
+                            <td>165 개</td>
+                            <td>2025.12.15 12 : 00</td>
+                        </tr>
+                        <tr onclick="viewItemDetail('운동복(하의)')">
+                            <td>운동복(하의)</td>
+                            <td><span class="status-badge status-low">품고</span></td>
+                            <td>80 개</td>
+                            <td>2025.10.15 15 : 00</td>
+                        </tr>
+                        <tr onclick="viewItemDetail('생수')">
+                            <td>생수</td>
+                            <td><span class="status-badge status-sufficient">충고</span></td>
+                            <td>90 개</td>
+                            <td>2025.12.03 16 : 00</td>
+                        </tr>
+                        <tr onclick="viewItemDetail('다이탈 프로')">
+                            <td>다이탈 프로</td>
+                            <td><span class="status-badge status-sufficient">충고</span></td>
+                            <td>20 개</td>
+                            <td>2025.01.05 18 : 00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 네비게이션
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!this.classList.contains('logout')) {
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    console.log(this.querySelector('span').textContent + ' 클릭됨');
+                } else {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        alert('로그아웃 되었습니다.');
+                    }
+                }
+            });
+        });
+
+        // 뒤로가기
+        function goBack() {
+            window.history.back();
+        }
+
+        // 물품 추가
+        function addItem() {
+            alert('물품 추가 페이지로 이동합니다.');
+        }
+
+        // 상세 보기
+        function viewDetail(itemName) {
+            alert(`${itemName} 상세 정보를 확인합니다.`);
+        }
+
+        // 편집
+        function editItem(event, itemName) {
+            event.stopPropagation();
+            alert(`${itemName} 정보를 수정합니다.`);
+        }
+
+        // 삭제
+        function deleteItem(event, itemName) {
+            event.stopPropagation();
+            if (confirm(`${itemName}을(를) 삭제하시겠습니까?`)) {
+                alert(`${itemName}이(가) 삭제되었습니다.`);
+            }
+        }
+
+        // 테이블 행 클릭
+        function viewItemDetail(itemName) {
+            alert(`${itemName} 상세 정보\n\n재고 수량 및 입출고 내역을 확인할 수 있습니다.`);
+        }
+
+        // 프로그레스 바 애니메이션
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+
+            // 카드 진입 애니메이션
+            const cards = document.querySelectorAll('.stat-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 테이블 행 호버 효과
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.style.cursor = 'pointer';
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = 'rgba(255, 107, 0, 0.1)';
+                this.style.transition = 'background-color 0.2s';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+            });
+        });
+    </script>
+</body>
+</html>

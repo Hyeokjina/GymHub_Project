@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymHub - 시설 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+            width: 255px;
+            height: 100%;
+            background-color: #1a0f0a;
+            border-right: 1px solid #ff6b00;
+        }
+
+        .logo-container {
+            position: absolute;
+            left: 33px;
+            top: 1px;
+            width: 221px;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 24px 22px 24px 0;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            color: #ff6b00;
+            text-shadow: 
+                0 0 10px #ff8800,
+                0 0 20px #ff8800,
+                0 0 30px #ff8800,
+                0 0 40px #ffaa00,
+                0 0 60px #ffdd00;
+            animation: neonBuzz 3s ease-in-out infinite;
+        }
+
+        @keyframes neonBuzz {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 60px #ffdd00;
+            }
+            10% {
+                text-shadow: 
+                    0 0 5px #ff8800,
+                    0 0 10px #ff8800;
+            }
+            20% {
+                text-shadow: 
+                    0 0 15px #ff8800,
+                    0 0 25px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 70px #ffdd00;
+            }
+        }
+
+        .divider {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 255px;
+            height: 1px;
+            background-color: #ff6b00;
+        }
+
+        .navigation {
+            position: absolute;
+            left: 0;
+            top: 109px;
+            width: 255px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-button {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .nav-button:hover {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.active {
+            border-color: #ff6b00;
+        }
+
+        .nav-button img {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .nav-button span {
+            position: absolute;
+            left: 40px;
+            top: 7px;
+            font-size: 14px;
+            color: #ffa366;
+        }
+
+        .nav-button.logout span {
+            color: #ff5252;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: #0a0a0a;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .stat-card-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card-label {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 8px;
+        }
+
+        .stat-card-value {
+            font-size: 24px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .stat-card-sub {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-top: 4px;
+        }
+
+        /* Section Container */
+        .section {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff6b00;
+            margin-bottom: 24px;
+        }
+
+        .section-title-group h2 {
+            font-size: 18px;
+            color: #ff6b00;
+            margin-bottom: 4px;
+        }
+
+        .section-title-group p {
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+
+        .add-button {
+            background-color: #ff6b00;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+            transition: all 0.3s;
+        }
+
+        .add-button:hover {
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #2d1810;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            color: #ff6b00;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 2px solid #ff6b00;
+        }
+
+        td {
+            padding: 16px;
+            color: #b0b0b0;
+            font-size: 14px;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        td:first-child {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-normal {
+            background-color: rgba(0, 201, 80, 0.2);
+            border: 1px solid #00c950;
+            color: #05df72;
+        }
+
+        .status-maintenance {
+            background-color: rgba(240, 177, 0, 0.2);
+            border: 1px solid #f0b100;
+            color: #fdc700;
+        }
+
+        /* Action Button */
+        .action-btn {
+            background-color: #0a0a0a;
+            border: 1px solid #ff6b00;
+            border-radius: 8px;
+            padding: 6px 16px;
+            color: #ffa366;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: #ff6b00;
+            color: white;
+        }
+
+        /* Bottom Grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        /* Locker Grid */
+        .locker-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+
+        .locker-item {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 16px 8px;
+            text-align: center;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .locker-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .locker-number {
+            font-size: 14px;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .locker-name {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 4px;
+        }
+
+        .locker-date {
+            font-size: 11px;
+            color: #b0b0b0;
+        }
+
+        .locker-item.occupied {
+            border-color: #00c950;
+        }
+
+        .locker-item.expiring {
+            border-color: #fdc700;
+        }
+
+        .locker-item.available {
+            border-color: #5a5a5a;
+            opacity: 0.6;
+        }
+
+        /* Locker Status */
+        .locker-status {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .status-item {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.2);
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-bottom: 8px;
+        }
+
+        .status-value {
+            font-size: 24px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .status-sub-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .status-value.used {
+            color: #fa5546;
+        }
+
+        .status-value.expiring {
+            color: #fdc700;
+        }
+
+        .status-value.available {
+            color: #05df72;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <div class="icon">
+                    <img src="sidebar/icon/logo.png" alt="GymHub 로고">
+                </div>
+                <p class="logo-text">GymHub</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <nav class="navigation">
+                <button class="nav-button">
+                    <img src="sidebar/icon/home.png" alt="대시보드">
+                    <span>대시보드</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/group.png" alt="회원 관리">
+                    <span>회원 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/finace.png" alt="매출 현황">
+                    <span>매출 현황</span>
+                </button>
+                <button class="nav-button active">
+                    <img src="sidebar/icon/fitness_center.png" alt="시설 관리">
+                    <span>시설 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/calendar.png" alt="예약 상담 관리">
+                    <span>예약 상담 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/shopping_bag.png" alt="물품관리">
+                    <span>물품관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/movie.png" alt="영상관리">
+                    <span>영상관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/article_person.png" alt="헬스장 정보">
+                    <span>헬스장 정보 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/campaign.png" alt="공지사항">
+                    <span>공지사항</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_tracker.png" alt="트레이너 관리">
+                    <span>트레이너 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/demography.png" alt="PT 관리">
+                    <span>PT 관리</span>
+                </button>
+                <button class="nav-button logout">
+                    <img src="sidebar/icon/output.png" alt="로그아웃">
+                    <span>로그아웃</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-icon">🏋️</div>
+                    <div class="stat-card-label">운동 기구</div>
+                    <div class="stat-card-value">43대</div>
+                    <div class="stat-card-sub">전체 기구수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">🔧</div>
+                    <div class="stat-card-value">42대</div>
+                    <div class="stat-card-sub">정상</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">⚠️</div>
+                    <div class="stat-card-value">2대</div>
+                    <div class="stat-card-sub">점검</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-icon">🔒</div>
+                    <div class="stat-card-value">1대</div>
+                    <div class="stat-card-sub">고장</div>
+                </div>
+            </div>
+
+            <!-- 기구 관리 -->
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <h2>기구 관리</h2>
+                        <p>전체 4개 기구</p>
+                    </div>
+                    <button class="add-button" onclick="addEquipment()">➕ 기구 추가</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>기구명</th>
+                            <th>분류명</th>
+                            <th>대수</th>
+                            <th>최근 점검일</th>
+                            <th>다음 점검일</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>트레드밀 #1</td>
+                            <td>유산소운동</td>
+                            <td>15 대</td>
+                            <td>2025.10.20</td>
+                            <td>2025.11.20</td>
+                            <td><button class="action-btn" onclick="editEquipment(this)">수정</button></td>
+                        </tr>
+                        <tr>
+                            <td>스미스머신 #2</td>
+                            <td>웨이트룸</td>
+                            <td>10 대</td>
+                            <td>2025.10.05</td>
+                            <td>2025.11.05</td>
+                            <td><button class="action-btn" onclick="editEquipment(this)">수정</button></td>
+                        </tr>
+                        <tr>
+                            <td>사이클 #3</td>
+                            <td>유산소</td>
+                            <td>8 대</td>
+                            <td>2025.10.15</td>
+                            <td>2025.11.01</td>
+                            <td><button class="action-btn" onclick="editEquipment(this)">수정</button></td>
+                        </tr>
+                        <tr>
+                            <td>벤 프레스 #3</td>
+                            <td>웨이트룸앤</td>
+                            <td>5 대</td>
+                            <td>2025.10.22</td>
+                            <td>2025.11.22</td>
+                            <td><button class="action-btn" onclick="editEquipment(this)">수정</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bottom Grid -->
+            <div class="bottom-grid">
+                <!-- 락커 관리 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title-group">
+                            <h2>락커 관리</h2>
+                            <p>전체 30개 락커</p>
+                        </div>
+                        <button class="add-button" onclick="addLocker()">➕ 락커 추가</button>
+                    </div>
+
+                    <div class="locker-grid">
+                        <div class="locker-item occupied">
+                            <div class="locker-number">A-127</div>
+                            <div class="locker-name">김희원</div>
+                            <div class="locker-date">2024.04.01</div>
+                            <div class="locker-date">2025.04.01</div>
+                        </div>
+                        <div class="locker-item occupied">
+                            <div class="locker-number">A-45</div>
+                            <div class="locker-name">이지훈</div>
+                            <div class="locker-date">2024.09.15</div>
+                            <div class="locker-date">2024.12.15</div>
+                        </div>
+                        <div class="locker-item occupied">
+                            <div class="locker-number">A-34</div>
+                            <div class="locker-name">강민지</div>
+                            <div class="locker-date">2024.03.13</div>
+                            <div class="locker-date">2025.05.15</div>
+                        </div>
+                        <div class="locker-item occupied">
+                            <div class="locker-number">B-78</div>
+                            <div class="locker-name">박소희</div>
+                            <div class="locker-date">2024.06.01</div>
+                            <div class="locker-date">2024.09.01</div>
+                        </div>
+                        <div class="locker-item occupied">
+                            <div class="locker-number">C-12</div>
+                            <div class="locker-name">옥소연</div>
+                            <div class="locker-date">2024.10.01</div>
+                            <div class="locker-date">2025.01.01</div>
+                        </div>
+                        <div class="locker-item available">
+                            <div class="locker-number">A-15</div>
+                            <div class="locker-name">-</div>
+                            <div class="locker-date">-</div>
+                            <div class="locker-date">-</div>
+                        </div>
+                        <div class="locker-item available">
+                            <div class="locker-number">B-23</div>
+                            <div class="locker-name">-</div>
+                            <div class="locker-date">-</div>
+                            <div class="locker-date">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 락커 현황 -->
+                <div class="section">
+                    <div class="section-header">
+                        <div class="section-title-group">
+                            <h2>락커 현황</h2>
+                        </div>
+                    </div>
+
+                    <div class="locker-status">
+                        <div class="status-item">
+                            <div class="status-label">전체 락커</div>
+                            <div class="status-value">30개</div>
+                        </div>
+                        <div class="status-sub-grid">
+                            <div class="status-item">
+                                <div class="status-label">사용중</div>
+                                <div class="status-value used">17개</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-label">만료예정</div>
+                                <div class="status-value expiring">6개</div>
+                            </div>
+                        </div>
+                        <div class="status-item">
+                            <div class="status-label">사용 가능한 락커 수</div>
+                            <div class="status-value available">13개</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 네비게이션
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!this.classList.contains('logout')) {
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    console.log(this.querySelector('span').textContent + ' 클릭됨');
+                } else {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        alert('로그아웃 되었습니다.');
+                    }
+                }
+            });
+        });
+
+        // 기구 추가
+        function addEquipment() {
+            alert('기구 추가 페이지로 이동합니다.');
+        }
+
+        // 기구 수정
+        function editEquipment(button) {
+            const row = button.closest('tr');
+            const name = row.querySelector('td:first-child').textContent;
+            alert(name + ' 기구 정보를 수정합니다.');
+        }
+
+        // 락커 추가
+        function addLocker() {
+            alert('락커 추가 기능입니다.');
+        }
+
+        // 락커 클릭
+        document.querySelectorAll('.locker-item').forEach(locker => {
+            locker.addEventListener('click', function() {
+                const number = this.querySelector('.locker-number').textContent;
+                const name = this.querySelector('.locker-name').textContent;
+                if (name === '-') {
+                    alert(number + ' 락커는 사용 가능합니다.');
+                } else {
+                    alert(number + ' 락커 정보\n사용자: ' + name);
+                }
+            });
+        });
+
+        // 카드 호버 효과
+        document.querySelectorAll('.stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+                this.style.transition = 'transform 0.3s';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

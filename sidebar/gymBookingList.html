@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymHub - 예약 상담 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+            width: 255px;
+            height: 100%;
+            background-color: #1a0f0a;
+            border-right: 1px solid #ff6b00;
+        }
+
+        .logo-container {
+            position: absolute;
+            left: 33px;
+            top: 1px;
+            width: 221px;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 24px 22px 24px 0;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+        }
+
+        .icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            color: #ff6b00;
+            text-shadow: 
+                0 0 10px #ff8800,
+                0 0 20px #ff8800,
+                0 0 30px #ff8800,
+                0 0 40px #ffaa00,
+                0 0 60px #ffdd00;
+            animation: neonBuzz 3s ease-in-out infinite;
+        }
+
+        @keyframes neonBuzz {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 60px #ffdd00;
+            }
+            10% {
+                text-shadow: 
+                    0 0 5px #ff8800,
+                    0 0 10px #ff8800;
+            }
+            20% {
+                text-shadow: 
+                    0 0 15px #ff8800,
+                    0 0 25px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 70px #ffdd00;
+            }
+        }
+
+        .divider {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 255px;
+            height: 1px;
+            background-color: #ff6b00;
+        }
+
+        .navigation {
+            position: absolute;
+            left: 0;
+            top: 109px;
+            width: 255px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-button {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .nav-button:hover {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.active {
+            border-color: #ff6b00;
+        }
+
+        .nav-button img {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .nav-button span {
+            position: absolute;
+            left: 40px;
+            top: 7px;
+            font-size: 14px;
+            color: #ffa366;
+        }
+
+        .nav-button.logout span {
+            color: #ff5252;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: #0a0a0a;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Section Container */
+        .section {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .section-header {
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff6b00;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: #ff6b00;
+        }
+
+        /* Consultation List */
+        .consultation-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Consultation Item */
+        .consultation-item {
+            background-color: #3d2810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .consultation-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .consultation-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .consultation-name {
+            font-size: 18px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .consultation-details {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detail-icon {
+            font-size: 16px;
+        }
+
+        /* Status Button */
+        .status-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+
+        .status-button.pending {
+            background-color: #ff6b00;
+            color: white;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.4);
+        }
+
+        .status-button.pending:hover {
+            box-shadow: 0 0 20px rgba(255, 107, 0, 0.6);
+            transform: scale(1.05);
+        }
+
+        .status-button.completed {
+            background-color: #05df72;
+            color: white;
+            box-shadow: 0 0 10px rgba(5, 223, 114, 0.4);
+        }
+
+        .status-button.completed:hover {
+            box-shadow: 0 0 20px rgba(5, 223, 114, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #b0b0b0;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-text {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-container">
+                <div class="icon">
+                    <img src="sidebar/icon/logo.png" alt="GymHub 로고">
+                </div>
+                <p class="logo-text">GymHub</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <nav class="navigation">
+                <button class="nav-button">
+                    <img src="sidebar/icon/home.png" alt="대시보드">
+                    <span>대시보드</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/group.png" alt="회원 관리">
+                    <span>회원 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/finace.png" alt="매출 현황">
+                    <span>매출 현황</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_center.png" alt="시설 관리">
+                    <span>시설 관리</span>
+                </button>
+                <button class="nav-button active">
+                    <img src="sidebar/icon/calendar.png" alt="예약 상담 관리">
+                    <span>예약 상담 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/shopping_bag.png" alt="물품관리">
+                    <span>물품관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/movie.png" alt="영상관리">
+                    <span>영상관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/article_person.png" alt="헬스장 정보">
+                    <span>헬스장 정보 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/campaign.png" alt="공지사항">
+                    <span>공지사항</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_tracker.png" alt="트레이너 관리">
+                    <span>트레이너 관리</span>
+                </button>
+                <button class="nav-button">
+                    <img src="sidebar/icon/demography.png" alt="PT 관리">
+                    <span>PT 관리</span>
+                </button>
+                <button class="nav-button logout">
+                    <img src="sidebar/icon/output.png" alt="로그아웃">
+                    <span>로그아웃</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">예약 상담 목록</h2>
+                </div>
+
+                <div class="consultation-list">
+                    <!-- Consultation Item 1 - 상담 예정 -->
+                    <div class="consultation-item" onclick="viewConsultation(1)">
+                        <div class="consultation-info">
+                            <div class="consultation-name">이민지</div>
+                            <div class="consultation-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🕐</span>
+                                    <span>10월 29일 15:00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="status-button pending" onclick="toggleStatus(event, this)">상담 예정</button>
+                    </div>
+
+                    <!-- Consultation Item 2 - 상담 예정 -->
+                    <div class="consultation-item" onclick="viewConsultation(2)">
+                        <div class="consultation-info">
+                            <div class="consultation-name">이민지</div>
+                            <div class="consultation-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🕐</span>
+                                    <span>10월 29일 15:00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="status-button pending" onclick="toggleStatus(event, this)">상담 예정</button>
+                    </div>
+
+                    <!-- Consultation Item 3 - 상담 완료 -->
+                    <div class="consultation-item" onclick="viewConsultation(3)">
+                        <div class="consultation-info">
+                            <div class="consultation-name">이민지</div>
+                            <div class="consultation-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🕐</span>
+                                    <span>10월 29일 15:00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="status-button completed" onclick="toggleStatus(event, this)">상담 완료</button>
+                    </div>
+
+                    <!-- Consultation Item 4 - 상담 완료 -->
+                    <div class="consultation-item" onclick="viewConsultation(4)">
+                        <div class="consultation-info">
+                            <div class="consultation-name">이민지</div>
+                            <div class="consultation-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🕐</span>
+                                    <span>10월 29일 15:00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="status-button completed" onclick="toggleStatus(event, this)">상담 완료</button>
+                    </div>
+
+                    <!-- Consultation Item 5 - 상담 완료 -->
+                    <div class="consultation-item" onclick="viewConsultation(5)">
+                        <div class="consultation-info">
+                            <div class="consultation-name">이민지</div>
+                            <div class="consultation-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🕐</span>
+                                    <span>10월 29일 15:00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="status-button completed" onclick="toggleStatus(event, this)">상담 완료</button>
+                    </div>
+
+                    <!-- Consultation Item 6 - 상담 완료 -->
+                    <div class="consultation-item" onclick="viewConsultation(6)">
+                        <div class="consultation-info">
+                            <div class="consultation-name">이민지</div>
+                            <div class="consultation-details">
+                                <div class="detail-item">
+                                    <span class="detail-icon">🕐</span>
+                                    <span>10월 29일 15:00</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-icon">📞</span>
+                                    <span>010-1234-5678</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="status-button completed" onclick="toggleStatus(event, this)">상담 완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 네비게이션
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!this.classList.contains('logout')) {
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    console.log(this.querySelector('span').textContent + ' 클릭됨');
+                } else {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        alert('로그아웃 되었습니다.');
+                    }
+                }
+            });
+        });
+
+        // 상담 상세 보기
+        function viewConsultation(id) {
+            const item = event.currentTarget;
+            const name = item.querySelector('.consultation-name').textContent;
+            const time = item.querySelector('.consultation-details .detail-item:first-child span:last-child').textContent;
+            const phone = item.querySelector('.consultation-details .detail-item:last-child span:last-child').textContent;
+            
+            alert(`상담 정보\n\n이름: ${name}\n일시: ${time}\n연락처: ${phone}`);
+        }
+
+        // 상태 토글
+        function toggleStatus(event, button) {
+            event.stopPropagation(); // 부모 클릭 이벤트 방지
+            
+            if (button.classList.contains('pending')) {
+                if (confirm('상담을 완료 처리하시겠습니까?')) {
+                    button.classList.remove('pending');
+                    button.classList.add('completed');
+                    button.textContent = '상담 완료';
+                    
+                    // 애니메이션 효과
+                    button.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        button.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            } else {
+                if (confirm('상담을 예정으로 되돌리시겠습니까?')) {
+                    button.classList.remove('completed');
+                    button.classList.add('pending');
+                    button.textContent = '상담 예정';
+                    
+                    // 애니메이션 효과
+                    button.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        button.style.transform = 'scale(1)';
+                    }, 200);
+                }
+            }
+        }
+
+        // 카드 진입 애니메이션
+        window.addEventListener('load', function() {
+            const items = document.querySelectorAll('.consultation-item');
+            items.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.5s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // 전화 걸기 기능 (모바일에서만 작동)
+        document.querySelectorAll('.detail-item').forEach(item => {
+            const icon = item.querySelector('.detail-icon');
+            if (icon && icon.textContent === '📞') {
+                item.style.cursor = 'pointer';
+                item.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    const phone = this.querySelector('span:last-child').textContent;
+                    if (confirm(`${phone}로 전화하시겠습니까?`)) {
+                        window.location.href = `tel:${phone}`;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

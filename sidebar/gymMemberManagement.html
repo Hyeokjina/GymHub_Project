@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymHub - 회원 관리</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: relative;
+            width: 255px;
+            height: 100%;
+            background-color: #1a0f0a;
+            border-right: 1px solid #ff6b00;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: absolute;
+            left: 33px;
+            top: 1px;
+            width: 221px;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 24px 22px 24px 0;
+            box-sizing: border-box;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        .icon img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo-text-container {
+            width: 143px;
+            height: 62px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .logo-text {
+            position: absolute;
+            left: 7px;
+            top: 19px;
+            width: 129px;
+            font-size: 24px;
+            line-height: 24px;
+            color: #ff6b00;
+            font-style: normal;
+            text-shadow: 
+                0 0 10px #ff8800,
+                0 0 20px #ff8800,
+                0 0 30px #ff8800,
+                0 0 40px #ffaa00,
+                0 0 60px #ffdd00;
+            animation: neonBuzz 3s ease-in-out infinite;
+        }
+
+        @keyframes neonBuzz {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 60px #ffdd00;
+            }
+            10% {
+                text-shadow: 
+                    0 0 5px #ff8800,
+                    0 0 10px #ff8800;
+            }
+            20% {
+                text-shadow: 
+                    0 0 15px #ff8800,
+                    0 0 25px #ff8800,
+                    0 0 40px #ffaa00,
+                    0 0 70px #ffdd00;
+            }
+            30% {
+                text-shadow: 
+                    0 0 10px #ff8800,
+                    0 0 20px #ff8800,
+                    0 0 30px #ff8800;
+            }
+        }
+
+        /* Divider */
+        .divider {
+            position: absolute;
+            left: 0;
+            top: 108px;
+            width: 255px;
+            height: 1px;
+            background-color: #ff6b00;
+        }
+
+        /* Navigation */
+        .navigation {
+            position: absolute;
+            left: 0;
+            top: 109px;
+            width: 255px;
+            height: 726px;
+            padding: 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-button {
+            position: relative;
+            width: 100%;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav-button:hover {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.active {
+            border-color: #ff6b00;
+        }
+
+        .nav-button.logout {
+            border-radius: 8px;
+            width: 223px;
+        }
+
+        .nav-button img {
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 16px;
+            height: 16px;
+            object-fit: contain;
+        }
+
+        .nav-button span {
+            position: absolute;
+            left: 40px;
+            top: 7px;
+            font-size: 14px;
+            line-height: 20px;
+            color: #ffa366;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .nav-button.logout span {
+            color: #ff5252;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background-color: #0a0a0a;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* Content Container */
+        .content-container {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 26px;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+
+        /* Header */
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #ff6b00;
+            margin-bottom: 24px;
+        }
+
+        .header-info h2 {
+            font-size: 18px;
+            color: #ff6b00;
+            margin-bottom: 4px;
+        }
+
+        .header-info p {
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background-color: #2d1810;
+            border: 2px solid #ff6b00;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 8px rgba(255, 107, 0, 0.25);
+        }
+
+        .filter-btn:hover {
+            background-color: #ff6b00;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
+        }
+
+        .add-member-btn {
+            background-color: #ff6b00;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.4);
+        }
+
+        .add-member-btn:hover {
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #2d1810;
+        }
+
+        th {
+            text-align: left;
+            padding: 11px 16px;
+            color: #ff6b00;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 2px solid #ff6b00;
+        }
+
+        th:last-child {
+            text-align: center;
+        }
+
+        td {
+            padding: 13px 16px;
+            color: #b0b0b0;
+            font-size: 14px;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        td:first-child {
+            color: white;
+            font-size: 16px;
+        }
+
+        td:nth-child(2) {
+            color: #ffa366;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 5px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-normal {
+            background-color: rgba(0, 201, 80, 0.2);
+            border: 1px solid #00c950;
+            color: #05df72;
+        }
+
+        .status-expiring {
+            background-color: rgba(240, 177, 0, 0.2);
+            border: 1px solid #f0b100;
+            color: #fdc700;
+        }
+
+        .status-expired {
+            background-color: rgba(251, 44, 54, 0.2);
+            border: 1px solid #fb2c36;
+            color: #ff6467;
+        }
+
+        .status-new {
+            background-color: rgba(255, 107, 0, 0.2);
+            border: 1px solid #ff6b00;
+            color: #ff6b00;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .edit-btn {
+            background-color: #0a0a0a;
+            border: 1px solid #ff6b00;
+            border-radius: 8px;
+            padding: 6px 0;
+            width: 54px;
+            color: #ffa366;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .edit-btn:hover {
+            background-color: #ff6b00;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #0a0a0a;
+            border: 1px solid #ff5252;
+            border-radius: 8px;
+            padding: 6px 0;
+            width: 54px;
+            color: #ff5252;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff5252;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Logo Container -->
+            <div class="logo-container">
+                <div class="icon">
+                    <img src="sidebar/icon/logo.png" alt="GymHub 로고 아이콘">
+                </div>
+                <div class="logo-text-container">
+                    <p class="logo-text">GymHub</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Navigation -->
+            <nav class="navigation">
+                <button class="nav-button">
+                    <img src="sidebar/icon/home.png" alt="대시보드 아이콘">
+                    <span>대시보드</span>
+                </button>
+
+                <button class="nav-button active">
+                    <img src="sidebar/icon/group.png" alt="회원 관리 아이콘">
+                    <span>회원 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/finace.png" alt="매출 현황 아이콘">
+                    <span>매출 현황</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_center.png" alt="시설 관리 아이콘">
+                    <span>시설 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/calendar.png" alt="예약 상담 관리 아이콘">
+                    <span>예약 상담 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/shopping_bag.png" alt="물품관리 아이콘">
+                    <span>물품관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/movie.png" alt="영상관리 아이콘">
+                    <span>영상관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/article_person.png" alt="헬스장 정보 관리 아이콘">
+                    <span>헬스장 정보 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/campaign.png" alt="공지사항 아이콘">
+                    <span>공지사항</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/fitness_tracker.png" alt="트레이너 관리 아이콘">
+                    <span>트레이너 관리</span>
+                </button>
+
+                <button class="nav-button">
+                    <img src="sidebar/icon/demography.png" alt="PT 관리 아이콘">
+                    <span>PT 관리</span>
+                </button>
+
+                <button class="nav-button logout">
+                    <img src="sidebar/icon/output.png" alt="로그아웃 아이콘">
+                    <span>로그아웃</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="content-container">
+                <!-- Header -->
+                <div class="content-header">
+                    <div class="header-info">
+                        <h2>회원 목록</h2>
+                        <p>전체 8명</p>
+                    </div>
+                    <div class="header-buttons">
+                        <button class="filter-btn" onclick="filterMembers('all')">전체</button>
+                        <button class="filter-btn" onclick="filterMembers('new')">신규</button>
+                        <button class="filter-btn" onclick="filterMembers('expiring')">만료예정</button>
+                        <button class="filter-btn" onclick="filterMembers('expired')">만료</button>
+                        <button class="add-member-btn" onclick="addMember()">
+                            <span>➕</span>
+                            <span>신규 회원 등록</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-container">
+                    <table id="memberTable">
+                        <thead>
+                            <tr>
+                                <th>이름</th>
+                                <th>이용권</th>
+                                <th>시작일</th>
+                                <th>만료일</th>
+                                <th>락커</th>
+                                <th>상태</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-status="normal">
+                                <td>김희원</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.04.01</td>
+                                <td>2025.04.01</td>
+                                <td>A-127</td>
+                                <td><span class="status-badge status-normal">정상</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="expiring">
+                                <td>이지훈</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.09.15</td>
+                                <td>2024.12.15</td>
+                                <td>B-45</td>
+                                <td><span class="status-badge status-expiring">만료임박</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="normal">
+                                <td>박서연</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.08.01</td>
+                                <td>2024.11.01</td>
+                                <td>-</td>
+                                <td><span class="status-badge status-normal">정상</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="expired">
+                                <td>최민수</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.06.10</td>
+                                <td>2024.09.10</td>
+                                <td>A-89</td>
+                                <td><span class="status-badge status-expired">만료</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="new">
+                                <td>정수아</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.10.01</td>
+                                <td>2025.01.01</td>
+                                <td>C-12</td>
+                                <td><span class="status-badge status-new">신규</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="normal">
+                                <td>강민지</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.05.15</td>
+                                <td>2025.05.15</td>
+                                <td>A-34</td>
+                                <td><span class="status-badge status-normal">정상</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="expiring">
+                                <td>윤태호</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.07.20</td>
+                                <td>2024.10.20</td>
+                                <td>-</td>
+                                <td><span class="status-badge status-expiring">만료임박</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="normal">
+                                <td>한소희</td>
+                                <td>30일 이용권 + 30일 락커 이용권 + PT 10회 이용권</td>
+                                <td>2024.09.01</td>
+                                <td>2024.12.01</td>
+                                <td>B-78</td>
+                                <td><span class="status-badge status-normal">정상</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="edit-btn" onclick="editMember(this)">수정</button>
+                                        <button class="delete-btn" onclick="deleteMember(this)">삭제</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 네비게이션 버튼 클릭 이벤트
+        document.querySelectorAll('.nav-button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (!this.classList.contains('logout')) {
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    console.log(this.querySelector('span').textContent + ' 클릭됨');
+                } else {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        alert('로그아웃 되었습니다.');
+                    }
+                }
+            });
+        });
+
+        // 회원 필터링 함수
+        function filterMembers(status) {
+            const rows = document.querySelectorAll('#memberTable tbody tr');
+            
+            rows.forEach(row => {
+                if (status === 'all') {
+                    row.style.display = '';
+                } else {
+                    if (row.dataset.status === status) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+            // 표시된 회원 수 업데이트
+            const visibleRows = document.querySelectorAll('#memberTable tbody tr:not([style*="display: none"])');
+            document.querySelector('.header-info p').textContent = '전체 ' + visibleRows.length + '명';
+        }
+
+        // 신규 회원 등록 함수
+        function addMember() {
+            alert('신규 회원 등록 페이지로 이동합니다.');
+        }
+
+        // 회원 정보 수정 함수
+        function editMember(button) {
+            const row = button.closest('tr');
+            const name = row.querySelector('td:first-child').textContent;
+            alert(name + ' 회원의 정보를 수정합니다.');
+        }
+
+        // 회원 삭제 함수
+        function deleteMember(button) {
+            const row = button.closest('tr');
+            const name = row.querySelector('td:first-child').textContent;
+            
+            if (confirm(name + ' 회원을 삭제하시겠습니까?')) {
+                row.remove();
+                
+                // 전체 회원 수 업데이트
+                const totalRows = document.querySelectorAll('#memberTable tbody tr').length;
+                document.querySelector('.header-info p').textContent = '전체 ' + totalRows + '명';
+                
+                alert(name + ' 회원이 삭제되었습니다.');
+            }
+        }
+    </script>
+</body>
+</html>
