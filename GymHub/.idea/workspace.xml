@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a788a0a-530d-45ab-865c-3e92a98d9f42" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/sidebar/sidebarGym.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/gym/gymDashBoard.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e03c5eea-a3b4-4387-a376-4844b654cbc7" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,12 +13,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jsp File" />
+        <option value="Class" />
       </list>
     </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -32,9 +25,9 @@
     </option>
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
+  &quot;associatedIndex&quot;: 7
 }</component>
-  <component name="ProjectId" id="352HDFt6zXYUf8HyUQJLtNabqBV" />
+  <component name="ProjectId" id="352d5VV0MKzVj1YBGDlrYN1ABEp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -47,35 +40,35 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.DemoApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
+    "Spring Boot.GymhubApplication.executor": "Run",
     "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/workspace/GymHub/GymHub",
+    "last_opened_file_path": "C:/semi/gymhub (2)/gymhub/src/main/webapp/WEB-INF/views/common/sidebar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\gymhub\gymhub (1)\demo\src\main\webapp\resources\css" />
-      <recent name="C:\gymhub\gymhub (1)\demo\src\main" />
-      <recent name="C:\gymhub\gymhub (1)\demo\src\main\webapp\resources\images\icon" />
-      <recent name="C:\gymhub\gymhub (1)\demo\src\main\webapp" />
+      <recent name="C:\semi\gymhub (2)\gymhub\src\main\webapp\WEB-INF\views\common\sidebar" />
+      <recent name="C:\semi\gymhub (2)\gymhub\src\main\webapp\WEB-INF\views\member" />
+      <recent name="C:\semi\gymhub (2)\gymhub\src\main\webapp\WEB-INF\views" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\semi\gymhub (2)\gymhub\src\main\webapp\WEB-INF\views\views\trainer" />
+      <recent name="C:\semi\gymhub (2)\gymhub\src\main\webapp\WEB-INF\views\views\gym" />
+      <recent name="C:\semi\gymhub (2)\gymhub\src\main\webapp\WEB-INF\views\views\common\sidebar" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="DemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="spring" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.gymhub.demo.DemoApplication" />
+    <configuration name="GymhubApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="gymhub" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.kh.gymhub.GymhubApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -91,14 +84,13 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">
-      <changelist id="1a788a0a-530d-45ab-865c-3e92a98d9f42" name="변경" comment="" />
-      <created>1762301124225</created>
+      <changelist id="e03c5eea-a3b4-4387-a376-4844b654cbc7" name="변경" comment="" />
+      <created>1762311918937</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1762301124225</updated>
-      <workItem from="1762301125598" duration="4661000" />
-      <workItem from="1762310534923" duration="850000" />
-      <workItem from="1762312125113" duration="421000" />
+      <updated>1762311918937</updated>
+      <workItem from="1762311920610" duration="1710000" />
+      <workItem from="1762313684229" duration="176000" />
     </task>
     <servers />
   </component>

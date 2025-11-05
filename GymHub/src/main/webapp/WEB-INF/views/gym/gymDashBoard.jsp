@@ -11,7 +11,7 @@
 <body>
 <div class="app-container">
     <!-- Sidebar Include -->
-    <jsp:include page="/WEB-INF/views/common/sidebar/sidebarGym.jsp" />
+    <jsp:include page="../common/sidebar/sidebarGym.jsp" />
 
     <!-- Main Content -->
     <div class="main-content">

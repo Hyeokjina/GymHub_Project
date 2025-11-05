@@ -4,18 +4,18 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>트레이너 대시보드</title>
+    <title>회원 대시보드</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
 
 </head>
 <body>
 <div class="app-container">
     <!-- Sidebar Include -->
-    <jsp:include page="../common/sidebar/sidebarTrainer.jsp" />
+    <jsp:include page="/WEB-INF/views/common/sidebar/sidebarMember.jsp" />
 
     <!-- Main Content -->
     <div class="main-content">
-        <h1>트레이너 대시보드</h1>
+        <h1>회원 대시보드</h1>
         <!-- 페이지 내용 -->
     </div>
 </div>

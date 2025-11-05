@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=ABeeZee&family=ADLaM+Display&display=swap" rel="stylesheet">
-    
+
     <!-- Index 페이지 전용 스타일 -->
     <style>
         /* ========================================
@@ -812,7 +812,7 @@
             .facility-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
+
             .gym-detail-modal .cards-grid {
                 grid-template-columns: 1fr;
             }
@@ -843,6 +843,9 @@
         <span class="logo-text">GYMHub</span>
     </div>
     <div class="header-buttons">
+        <a href="${pageContext.request.contextPath}/member/dashboard" class="btn btn-secondary" style="margin-right: 10px;">회원 대시보드</a>
+        <a href="${pageContext.request.contextPath}/trainer/dashboard" class="btn btn-secondary" style="margin-right: 10px;">트레이너 대시보드</a>
+        <a href="${pageContext.request.contextPath}/dashboard.do" class="btn btn-secondary" style="margin-right: 10px;">헬스장 대시보드</a>
         <c:choose>
             <c:when test="${not empty loginMember}">
                 <span class="welcome-message">${loginMember.name}님 환영합니다</span>
@@ -1227,7 +1230,7 @@
         <!-- 주소 & 연락처 -->
         <div class="section">
             <h3 class="section-title">주소 & 연락처</h3>
-            
+
             <div class="info-card">
                 <div class="info-icon">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -1257,7 +1260,7 @@
         <!-- 시설 정보 -->
         <div class="section">
             <h3 class="section-title">시설 정보</h3>
-            
+
             <div class="facility-grid">
                 <div class="facility-item">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -1289,7 +1292,7 @@
         <!-- 시간대별 혼잡도 -->
         <div class="section">
             <h3 class="section-title">시간대별 혼잡도</h3>
-            
+
             <div class="chart-container">
                 <svg width="100%" height="224" viewBox="0 0 415 224" fill="none" preserveAspectRatio="xMidYMid meet">
                     <!-- 그리드 라인 -->
@@ -1298,7 +1301,7 @@
                     <line x1="0" y1="92.5" x2="345" y2="92.5" stroke="#4A3020" stroke-dasharray="3 3"/>
                     <line x1="0" y1="46.5" x2="345" y2="46.5" stroke="#4A3020" stroke-dasharray="3 3"/>
                     <line x1="0" y1="0.5" x2="345" y2="0.5" stroke="#4A3020" stroke-dasharray="3 3"/>
-                    
+
                     <!-- 바 차트 -->
                     <rect x="16" y="152" width="30" height="37" rx="8" fill="#FF6B00"/>
                     <rect x="54" y="105" width="30" height="83" rx="8" fill="#FF6B00"/>
@@ -1309,14 +1312,14 @@
                     <rect x="244" y="32" width="30" height="157" rx="8" fill="#FF6B00"/>
                     <rect x="282" y="51" width="30" height="138" rx="8" fill="#FF6B00"/>
                     <rect x="320" y="97" width="30" height="92" rx="8" fill="#FF6B00"/>
-                    
+
                     <!-- X축 레이블 -->
                     <text x="30" y="210" fill="#8A6A50" font-size="12" text-anchor="middle">06:00</text>
                     <text x="106" y="210" fill="#8A6A50" font-size="12" text-anchor="middle">10:00</text>
                     <text x="183" y="210" fill="#8A6A50" font-size="12" text-anchor="middle">14:00</text>
                     <text x="259" y="210" fill="#8A6A50" font-size="12" text-anchor="middle">18:00</text>
                     <text x="335" y="210" fill="#8A6A50" font-size="12" text-anchor="middle">22:00</text>
-                    
+
                     <!-- Y축 레이블 -->
                     <text x="380" y="190" fill="#8A6A50" font-size="12" text-anchor="end">0</text>
                     <text x="380" y="145" fill="#8A6A50" font-size="12" text-anchor="end">25</text>

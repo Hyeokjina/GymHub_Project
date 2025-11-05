@@ -73,7 +73,7 @@
         <!-- Logo Container -->
         <div class="logo-container">
             <div class="logo-icon">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/logo.png" alt="GymHub 로고 아이콘">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/logo.png" alt="GymHub 로고 아이콘">
             </div>
             <p class="logo-text">GymHub</p>
         </div>
@@ -81,62 +81,62 @@
         <!-- Navigation -->
         <nav class="sidebar-nav">
             <a href="${pageContext.request.contextPath}/dashboard.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/home.png" alt="대시보드" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/home.png" alt="대시보드" class="nav-icon">
                 <span>대시보드</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/member/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/group.png" alt="회원 관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/people.png" alt="회원 관리" class="nav-icon">
                 <span>회원 관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/sales/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/finace.png" alt="매출 현황" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/ticket.png" alt="매출 현황" class="nav-icon">
                 <span>매출 현황</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/facility/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/fitness_center.png" alt="시설 관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/target.png" alt="시설 관리" class="nav-icon">
                 <span>시설 관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/reservation/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/calendar.png" alt="예약 상담 관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/calendar.png" alt="예약 상담 관리" class="nav-icon">
                 <span>예약 상담 관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/product/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/shopping_bag.png" alt="물품관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/book.png" alt="물품관리" class="nav-icon">
                 <span>물품관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/video/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/movie.png" alt="영상관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/clock.png" alt="영상관리" class="nav-icon">
                 <span>영상관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/gym/info.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/article_person.png" alt="헬스장 정보 관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/company.png" alt="헬스장 정보 관리" class="nav-icon">
                 <span>헬스장 정보 관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/notice/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/campaign.png" alt="공지사항" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/campaign.png" alt="공지사항" class="nav-icon">
                 <span>공지사항</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/trainer/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/fitness_tracker.png" alt="트레이너 관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/person.png" alt="트레이너 관리" class="nav-icon">
                 <span>트레이너 관리</span>
             </a>
 
             <a href="${pageContext.request.contextPath}/pt/list.do" class="nav-item">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/demography.png" alt="PT 관리" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/target.png" alt="PT 관리" class="nav-icon">
                 <span>PT 관리</span>
             </a>
 
             <a href="javascript:void(0);" onclick="logout()" class="nav-item logout">
-                <img src="${pageContext.request.contextPath}/resources/images/sidebar/icon/output.png" alt="로그아웃" class="nav-icon">
+                <img src="${pageContext.request.contextPath}/resources/images/icon/output.png" alt="로그아웃" class="nav-icon">
                 <span>로그아웃</span>
             </a>
         </nav>
