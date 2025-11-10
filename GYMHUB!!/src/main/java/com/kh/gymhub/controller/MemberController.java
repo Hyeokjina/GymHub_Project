@@ -30,5 +30,7 @@ public class MemberController {
     @GetMapping("/booking/booking")
     public String Booking() { return "booking/booking"; }
 
+    
+
 
 }
