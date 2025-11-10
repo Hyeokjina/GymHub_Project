@@ -38,7 +38,7 @@ public class GymController {
 
     @GetMapping("/reservation.gym")
     public String reservationManagement() {
-        return "gym/gymReservationManagement";
+        return "gymBookingList";
     }
 
     @GetMapping("/gym/info.gym")
