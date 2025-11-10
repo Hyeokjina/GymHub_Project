@@ -48,7 +48,6 @@ public class MemberController {
     @GetMapping("/booking/booking")
     public String Booking() { return "booking/booking"; }
 
-<<<<<<< HEAD
     // ====================================== 회원가입 ======================================================
     @GetMapping("/signup/checkId")
     @ResponseBody
@@ -56,10 +55,6 @@ public class MemberController {
         int count = memberService.getMemberCountById(checkId);
         return count > 0 ? "NNNNN" : "NNNNY";
     }
-=======
-    
-
->>>>>>> d4aecfa8082b41a9d8fd39f2de3c4b7077f05f25
 
     @PostMapping("/signup/member.do")
     public String signupMember(@RequestParam String id,
