@@ -1603,7 +1603,7 @@
                             ${loginMember.memberName}님, 환영합니다!
                         </c:when>
                         <c:otherwise>
-                            헬스장 운영자님, 환영합니다!
+                            헬스장 운영자페이지입니다. 환영합니다!
                         </c:otherwise>
                     </c:choose>
                 </c:when>
