@@ -32,7 +32,7 @@
                 </p>
                 <p style="color: #8A6A50; font-size: 14px; line-height: 1.6;">
                     회원가입 후 다양한 헬스장을 예약하고<br>
-                    혜택을 받아보세요!
+                    혜택을 받을수있습니다!
                 </p>
             </div>
 
