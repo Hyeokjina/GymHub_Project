@@ -48,7 +48,7 @@
         /* 헬스장 정보 카드 */
         .gym-info-card {
             background-color: #1a0f0a;
-            border: 1px solid #fff;
+            border: 1px solid #ff6b00;
             border-radius: 14px;
             padding: 25px;
             margin-bottom: 32px;
